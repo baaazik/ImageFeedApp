@@ -135,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="953.43511450381675" y="554.92957746478874"/>
+            <point key="canvasLocation" x="27" y="555"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="54a-jC-kni">
@@ -221,15 +221,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eby-eZ-CXq">
-                                <rect key="frame" x="0.0" y="59" width="393" height="724"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="GAB-lJ-mpX">
-                                        <rect key="frame" x="20" y="20" width="1600" height="1059"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1600" height="1059"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <viewLayoutGuide key="contentLayoutGuide" id="dQl-uQ-WiA"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="cvK-mZ-dXf"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="OWv-b1-iwV"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="uN6-Ev-ILd"/>
                                 <connections>
                                     <outlet property="delegate" destination="teh-j8-MFH" id="yqc-mf-EG8"/>
                                 </connections>
@@ -250,12 +250,12 @@
                         <viewLayoutGuide key="safeArea" id="ydO-zj-3Yo"/>
                         <color key="backgroundColor" name="YPBlack"/>
                         <constraints>
-                            <constraint firstItem="eby-eZ-CXq" firstAttribute="top" secondItem="ydO-zj-3Yo" secondAttribute="top" id="8hI-51-sfX"/>
-                            <constraint firstItem="eby-eZ-CXq" firstAttribute="trailing" secondItem="ydO-zj-3Yo" secondAttribute="trailing" id="G6p-Wu-WiY"/>
-                            <constraint firstItem="eby-eZ-CXq" firstAttribute="bottom" secondItem="ydO-zj-3Yo" secondAttribute="bottom" id="Ku7-uS-cDe"/>
+                            <constraint firstAttribute="bottom" secondItem="eby-eZ-CXq" secondAttribute="bottom" id="7Zr-aO-eIV"/>
+                            <constraint firstItem="eby-eZ-CXq" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" id="KKW-G7-iPt"/>
                             <constraint firstItem="pPw-kl-mJp" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" constant="8" id="Njb-Xf-BxH"/>
-                            <constraint firstItem="eby-eZ-CXq" firstAttribute="leading" secondItem="ydO-zj-3Yo" secondAttribute="leading" id="eRk-dQ-Ky4"/>
+                            <constraint firstAttribute="trailing" secondItem="eby-eZ-CXq" secondAttribute="trailing" id="T9E-pS-Xrt"/>
                             <constraint firstItem="pPw-kl-mJp" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" constant="8" id="k3i-Eu-xJc"/>
+                            <constraint firstItem="eby-eZ-CXq" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" id="mGd-7D-0CS"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gvN-8M-URu"/>
