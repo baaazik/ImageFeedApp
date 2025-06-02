@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fyQ-pr-9IY">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
@@ -35,22 +35,22 @@
             <objects>
                 <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1aI-NL-Vhw">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                                 <color key="backgroundColor" name="YPBlack"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="226" id="rO3-RB-Pvq" customClass="ImagesListCell" customModule="ImageFeedApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="226"/>
+                                        <rect key="frame" x="0.0" y="50" width="440" height="226"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rO3-RB-Pvq" id="HsB-32-UVk">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="226"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="440" height="226"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Y10-PC-wUR">
-                                                    <rect key="frame" x="16" y="8" width="361" height="210"/>
+                                                    <rect key="frame" x="16" y="8" width="408" height="210"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -59,7 +59,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxp-yf-vW5">
-                                                    <rect key="frame" x="333" y="8" width="44" height="44"/>
+                                                    <rect key="frame" x="380" y="8" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="WRs-tG-Ood"/>
                                                         <constraint firstAttribute="width" constant="44" id="jFi-2v-EgI"/>
@@ -70,7 +70,7 @@
                                                     </buttonConfiguration>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="9lt-wm-onX">
-                                                    <rect key="frame" x="16" y="188" width="361" height="30"/>
+                                                    <rect key="frame" x="16" y="188" width="408" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="CJf-mT-d7f"/>
                                                     </constraints>
@@ -142,7 +142,7 @@
             <objects>
                 <viewController id="SsW-41-YW4" customClass="ProfileViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mfu-bK-8Pt">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="2Ka-7T-YOk"/>
                         <color key="backgroundColor" name="YPBlack"/>
@@ -158,7 +158,7 @@
             <objects>
                 <viewController id="teh-j8-MFH" customClass="SingleImageViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aBE-tU-nwo">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="884"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eby-eZ-CXq">
@@ -187,16 +187,30 @@
                                     <action selector="backButtonClicked:" destination="teh-j8-MFH" eventType="touchUpInside" id="E1Y-K0-aDX"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcV-et-GIg">
+                                <rect key="frame" x="195" y="817" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="t5M-7C-0ns"/>
+                                    <constraint firstAttribute="width" constant="50" id="yZT-0s-csI"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="Sharing" title=""/>
+                                <connections>
+                                    <action selector="shareAction:" destination="teh-j8-MFH" eventType="touchUpInside" id="TdY-EQ-ARd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ydO-zj-3Yo"/>
                         <color key="backgroundColor" name="YPBlack"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="eby-eZ-CXq" secondAttribute="bottom" id="7Zr-aO-eIV"/>
+                            <constraint firstItem="rcV-et-GIg" firstAttribute="centerX" secondItem="aBE-tU-nwo" secondAttribute="centerX" id="7cm-aB-ZTY"/>
                             <constraint firstItem="eby-eZ-CXq" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" id="KKW-G7-iPt"/>
                             <constraint firstItem="pPw-kl-mJp" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" constant="8" id="Njb-Xf-BxH"/>
                             <constraint firstAttribute="trailing" secondItem="eby-eZ-CXq" secondAttribute="trailing" id="T9E-pS-Xrt"/>
                             <constraint firstItem="pPw-kl-mJp" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" constant="8" id="k3i-Eu-xJc"/>
                             <constraint firstItem="eby-eZ-CXq" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" id="mGd-7D-0CS"/>
+                            <constraint firstItem="ydO-zj-3Yo" firstAttribute="bottom" secondItem="rcV-et-GIg" secondAttribute="bottom" constant="17" id="oB3-kO-7ad"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gvN-8M-URu"/>
@@ -215,6 +229,7 @@
         <image name="Backward" width="24" height="24"/>
         <image name="Gradient" width="343" height="30"/>
         <image name="LikeImage" width="44" height="44"/>
+        <image name="Sharing" width="50.5" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YPBlack">

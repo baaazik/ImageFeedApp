@@ -79,6 +79,16 @@ final class SingleImageViewController: UIViewController {
         let y = (viewSize.height - contentSize.height) / 2
         scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: 0, right: 0)
     }
+
+    @IBAction func shareAction(_ sender: Any) {
+        guard let image else {
+            return
+        }
+        let activityItems: [Any] = [image]
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+
+        self.present(activityViewController, animated: true, completion: nil)
+    }
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {
