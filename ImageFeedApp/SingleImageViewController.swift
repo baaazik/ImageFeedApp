@@ -10,8 +10,10 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     var image: UIImage?
 
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
+    private var baseScale: Double?
+
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var imageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +21,12 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         scrollView.contentInsetAdjustmentBehavior = .never
+
+        if let image {
+            imageView.image = image
+            imageView.frame.size = image.size
+            //rescaleImageInScrollView(image: image)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -27,9 +35,12 @@ final class SingleImageViewController: UIViewController {
         // Call this in viewWillAppear, because in viewDidLoad scrollView.bounds.height has wrong
         // value and image is not centered
         if let image {
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
+            if baseScale == nil {
+                // Calculate and set scale once, because viewWillAppear can be called multiple
+                // times causing instant scale change
+                baseScale = rescaleImageInScrollView(image: image)
+            }
+            centerImageInScrollView()
         }
     }
 
@@ -37,7 +48,7 @@ final class SingleImageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    private func rescaleAndCenterImageInScrollView(image: UIImage) {
+    private func rescaleImageInScrollView(image: UIImage) -> Double {
         view.layoutIfNeeded()
         scrollView.layoutIfNeeded()
 
@@ -51,10 +62,17 @@ final class SingleImageViewController: UIViewController {
 
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
-        centerImageInScrollView()
+        return scale
     }
 
     private func centerImageInScrollView() {
+        if let baseScale {
+            // Don't center image if it zoomed in to let user zoom in any part of the image
+            if scrollView.zoomScale > baseScale {
+                return
+            }
+        }
+
         let contentSize = scrollView.contentSize
         let viewSize = scrollView.bounds
         let x = (viewSize.width - contentSize.width) / 2
@@ -66,10 +84,6 @@ final class SingleImageViewController: UIViewController {
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
-    }
-
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
