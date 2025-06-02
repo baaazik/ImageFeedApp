@@ -10,7 +10,7 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     var image: UIImage?
 
-    private var baseScale: Double?
+    private var isScaled: Bool = false
 
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var imageView: UIImageView!
@@ -35,10 +35,11 @@ final class SingleImageViewController: UIViewController {
         // Call this in viewWillAppear, because in viewDidLoad scrollView.bounds.height has wrong
         // value and image is not centered
         if let image {
-            if baseScale == nil {
+            if !isScaled {
                 // Calculate and set scale once, because viewWillAppear can be called multiple
                 // times causing instant scale change
-                baseScale = rescaleImageInScrollView(image: image)
+                rescaleImageInScrollView(image: image)
+                isScaled = true
             }
             centerImageInScrollView()
         }
@@ -48,7 +49,7 @@ final class SingleImageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    private func rescaleImageInScrollView(image: UIImage) -> Double {
+    private func rescaleImageInScrollView(image: UIImage) {
         view.layoutIfNeeded()
         scrollView.layoutIfNeeded()
 
@@ -57,26 +58,33 @@ final class SingleImageViewController: UIViewController {
 
         let scaleWidth = viewSize.width / imageSize.width
         let scaleHeight = viewSize.height / imageSize.height
-        var scale = min(scaleWidth, scaleHeight)
+        var scale = max(scaleWidth, scaleHeight)
         scale = min(max(scale, scrollView.minimumZoomScale), scrollView.maximumZoomScale)
 
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
-        return scale
+
+        // Set initial image position
+        // Offset should be positive
+        var (x, y) = calculateCentralPosition()
+        x = max(-x, 0)
+        y = min(-y, 0)
+        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
 
-    private func centerImageInScrollView() {
-        if let baseScale {
-            // Don't center image if it zoomed in to let user zoom in any part of the image
-            if scrollView.zoomScale > baseScale {
-                return
-            }
-        }
-
+    private func calculateCentralPosition() -> (Double, Double) {
         let contentSize = scrollView.contentSize
         let viewSize = scrollView.bounds
         let x = (viewSize.width - contentSize.width) / 2
         let y = (viewSize.height - contentSize.height) / 2
+
+        return (x, y)
+    }
+
+    private func centerImageInScrollView() {
+        var (x, y) = calculateCentralPosition()
+        x = max(x, 0)
+        y = max(y, 0)
         scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: 0, right: 0)
     }
 
