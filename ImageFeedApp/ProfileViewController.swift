@@ -8,11 +8,48 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    var avatarImageView: UIImageView!
-    var nameText: UILabel!
-    var accountText: UILabel!
-    var statusText: UILabel!
-    var exitButton: UIButton!
+    private lazy var avatarImageView: UIImageView = {
+        let avatarImage = UIImage(named: "Photo")
+        let avatarImageView = UIImageView()
+        avatarImageView.image = avatarImage
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        return avatarImageView
+    }()
+
+    private lazy var nameText: UILabel! = {
+        let nameText = UILabel()
+        nameText.text = "Екатерина Новикова"
+        nameText.textColor = .ypWhite
+        nameText.font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
+        nameText.translatesAutoresizingMaskIntoConstraints = false
+        return nameText
+    }()
+
+    private lazy var accountText: UILabel! = {
+        let accountText = UILabel()
+        accountText.text = "@ekaterina_nov"
+        accountText.textColor = .ypGray
+        accountText.font = UIFont.systemFont(ofSize: 13)
+        accountText.translatesAutoresizingMaskIntoConstraints = false
+        return accountText
+    }()
+
+    private lazy var statusText: UILabel! = {
+        let statusText = UILabel()
+        statusText.text = "Hello, world!"
+        statusText.textColor = .ypWhite
+        statusText.font = UIFont.systemFont(ofSize: 13)
+        statusText.translatesAutoresizingMaskIntoConstraints = false
+        return statusText
+    }()
+
+    private lazy var exitButton: UIButton! = {
+        let buttonImage = UIImage(named: "Exit")
+        let exitButton = UIButton()
+        exitButton.setImage(buttonImage, for: .normal)
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+        return exitButton
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,41 +58,14 @@ final class ProfileViewController: UIViewController {
     }
 
     func createElements() {
-        let avatarImage = UIImage(named: "Photo")
-        avatarImageView = UIImageView()
-        avatarImageView.image = avatarImage
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImageView)
-
-        nameText = UILabel()
-        nameText.text = "Екатерина Новикова"
-        nameText.textColor = .ypWhite
-        nameText.font = UIFont.boldSystemFont(ofSize: 23)
-        nameText.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameText)
-
-        accountText = UILabel()
-        accountText.text = "@ekaterina_nov"
-        accountText.textColor = .ypGray
-        accountText.font = UIFont(name: "SF Pro", size: 13)
-        accountText.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(accountText)
-
-        statusText = UILabel()
-        statusText.text = "Hello, world!"
-        statusText.textColor = .ypWhite
-        statusText.font = UIFont(name: "SF Pro", size: 13)
-        statusText.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(statusText)
-
-        let buttonImage = UIImage(named: "Exit")
-        exitButton = UIButton()
-        exitButton.setImage(buttonImage, for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)
 
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
@@ -75,5 +85,4 @@ final class ProfileViewController: UIViewController {
             exitButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
-
 }

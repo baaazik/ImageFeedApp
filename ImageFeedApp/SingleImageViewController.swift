@@ -45,8 +45,18 @@ final class SingleImageViewController: UIViewController {
         }
     }
 
-    @IBAction func backButtonClicked(_ sender: Any) {
+    @IBAction private func backButtonClicked(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction private func shareAction(_ sender: Any) {
+        guard let image else {
+            return
+        }
+        let activityItems: [Any] = [image]
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+
+        self.present(activityViewController, animated: true, completion: nil)
     }
 
     private func rescaleImageInScrollView(image: UIImage) {
@@ -86,16 +96,6 @@ final class SingleImageViewController: UIViewController {
         x = max(x, 0)
         y = max(y, 0)
         scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: 0, right: 0)
-    }
-
-    @IBAction func shareAction(_ sender: Any) {
-        guard let image else {
-            return
-        }
-        let activityItems: [Any] = [image]
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-
-        self.present(activityViewController, animated: true, completion: nil)
     }
 }
 

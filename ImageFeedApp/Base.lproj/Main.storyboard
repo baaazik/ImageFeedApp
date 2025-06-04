@@ -156,9 +156,9 @@
         <!--Single Image View Controller-->
         <scene sceneID="Mzt-bV-iqq">
             <objects>
-                <viewController id="teh-j8-MFH" customClass="SingleImageViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="teh-j8-MFH" customClass="SingleImageViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aBE-tU-nwo">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="884"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eby-eZ-CXq">
@@ -176,7 +176,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPw-kl-mJp">
-                                <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <rect key="frame" x="8" y="70" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="EhW-vA-q8R"/>
                                     <constraint firstAttribute="height" constant="48" id="GVk-5Y-hYG"/>
@@ -188,7 +188,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcV-et-GIg">
-                                <rect key="frame" x="195" y="817" width="50" height="50"/>
+                                <rect key="frame" x="195" y="855" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="t5M-7C-0ns"/>
                                     <constraint firstAttribute="width" constant="50" id="yZT-0s-csI"/>
@@ -206,9 +206,9 @@
                             <constraint firstAttribute="bottom" secondItem="eby-eZ-CXq" secondAttribute="bottom" id="7Zr-aO-eIV"/>
                             <constraint firstItem="rcV-et-GIg" firstAttribute="centerX" secondItem="aBE-tU-nwo" secondAttribute="centerX" id="7cm-aB-ZTY"/>
                             <constraint firstItem="eby-eZ-CXq" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" id="KKW-G7-iPt"/>
-                            <constraint firstItem="pPw-kl-mJp" firstAttribute="leading" secondItem="aBE-tU-nwo" secondAttribute="leading" constant="8" id="Njb-Xf-BxH"/>
+                            <constraint firstItem="pPw-kl-mJp" firstAttribute="leading" secondItem="ydO-zj-3Yo" secondAttribute="leading" constant="8" id="Njb-Xf-BxH"/>
                             <constraint firstAttribute="trailing" secondItem="eby-eZ-CXq" secondAttribute="trailing" id="T9E-pS-Xrt"/>
-                            <constraint firstItem="pPw-kl-mJp" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" constant="8" id="k3i-Eu-xJc"/>
+                            <constraint firstItem="pPw-kl-mJp" firstAttribute="top" secondItem="ydO-zj-3Yo" secondAttribute="top" constant="8" id="k3i-Eu-xJc"/>
                             <constraint firstItem="eby-eZ-CXq" firstAttribute="top" secondItem="aBE-tU-nwo" secondAttribute="top" id="mGd-7D-0CS"/>
                             <constraint firstItem="ydO-zj-3Yo" firstAttribute="bottom" secondItem="rcV-et-GIg" secondAttribute="bottom" constant="17" id="oB3-kO-7ad"/>
                         </constraints>
