@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6Jt-kM-gxe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1BM-hi-mMk">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,7 +29,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6sJ-50-l4r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1086" y="-2"/>
+            <point key="canvasLocation" x="-195" y="-2.510460251046025"/>
         </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
@@ -135,7 +136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="27" y="555"/>
+            <point key="canvasLocation" x="917.72727272727275" y="554.81171548117152"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="54a-jC-kni">
@@ -151,7 +152,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OXi-QM-OCm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="27" y="-184"/>
+            <point key="canvasLocation" x="917.72727272727275" y="-184.51882845188285"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="i9T-df-SYK">
@@ -200,13 +201,50 @@
                             <constraint firstItem="WTP-Do-FKi" firstAttribute="centerX" secondItem="0j8-Y9-T6t" secondAttribute="centerX" id="yKX-wv-ivX"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="ZJt-x5-zJm"/>
                     <connections>
                         <outlet property="loginButton" destination="xDL-mw-mFh" id="7I1-fT-rXb"/>
+                        <segue destination="E9S-dc-4ce" kind="show" identifier="ShowWebView" id="51w-mk-cGR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gzX-co-vgP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2260.909090909091" y="-3.1380753138075317"/>
+            <point key="canvasLocation" x="-2214.5454545454545" y="-3.1380753138075317"/>
+        </scene>
+        <!--Web View View Controller-->
+        <scene sceneID="kgX-hV-RrX">
+            <objects>
+                <viewController id="E9S-dc-4ce" customClass="WebViewViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TrO-1D-8W6">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ago-az-Scp">
+                                <rect key="frame" x="20" y="168" width="400" height="788"/>
+                                <color key="backgroundColor" name="YPWhite"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SHa-Vc-9mu"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ago-az-Scp" firstAttribute="top" secondItem="SHa-Vc-9mu" secondAttribute="top" id="E5m-fH-KNN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ago-az-Scp" secondAttribute="trailing" id="UjO-TH-DIB"/>
+                            <constraint firstItem="ago-az-Scp" firstAttribute="leading" secondItem="TrO-1D-8W6" secondAttribute="leadingMargin" id="wED-K0-1mJ"/>
+                            <constraint firstAttribute="bottom" secondItem="ago-az-Scp" secondAttribute="bottom" id="xX7-ZZ-I1h"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="zwc-fZ-Pbl"/>
+                    <connections>
+                        <outlet property="webView" destination="ago-az-Scp" id="REg-qc-WFK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KNC-DV-Jde" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1212.2727272727273" y="-3.1380753138075317"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="Mzt-bV-iqq">
@@ -276,7 +314,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5F-SJ-chn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1948.854961832061" y="554.92957746478874"/>
+            <point key="canvasLocation" x="2840.4545454545455" y="554.81171548117152"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="nFx-Vs-GLZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1BM-hi-mMk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eSg-Dw-azf">
+                        <rect key="frame" x="0.0" y="124" width="440" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="6Jt-kM-gxe" kind="relationship" relationship="rootViewController" id="DTp-oa-Qfg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hen-st-RBx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3106.3636363636365" y="-3.1380753138075317"/>
         </scene>
     </scenes>
     <resources>
@@ -294,5 +350,8 @@
         <namedColor name="YPWhite">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
