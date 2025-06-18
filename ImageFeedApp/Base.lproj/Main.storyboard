@@ -227,18 +227,26 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wY9-0d-dTo">
+                                <rect key="frame" x="0.0" y="168" width="440" height="4"/>
+                                <color key="progressTintColor" name="YPBlack"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SHa-Vc-9mu"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ago-az-Scp" firstAttribute="top" secondItem="SHa-Vc-9mu" secondAttribute="top" id="E5m-fH-KNN"/>
+                            <constraint firstItem="SHa-Vc-9mu" firstAttribute="trailing" secondItem="wY9-0d-dTo" secondAttribute="trailing" id="SFO-Fy-ECO"/>
+                            <constraint firstItem="wY9-0d-dTo" firstAttribute="top" secondItem="SHa-Vc-9mu" secondAttribute="top" id="Sq3-uC-4Nq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ago-az-Scp" secondAttribute="trailing" id="UjO-TH-DIB"/>
+                            <constraint firstItem="wY9-0d-dTo" firstAttribute="leading" secondItem="SHa-Vc-9mu" secondAttribute="leading" id="unT-DZ-3xw"/>
                             <constraint firstItem="ago-az-Scp" firstAttribute="leading" secondItem="TrO-1D-8W6" secondAttribute="leadingMargin" id="wED-K0-1mJ"/>
                             <constraint firstAttribute="bottom" secondItem="ago-az-Scp" secondAttribute="bottom" id="xX7-ZZ-I1h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zwc-fZ-Pbl"/>
                     <connections>
+                        <outlet property="progressView" destination="wY9-0d-dTo" id="fpG-pW-Aio"/>
                         <outlet property="webView" destination="ago-az-Scp" id="REg-qc-WFK"/>
                     </connections>
                 </viewController>

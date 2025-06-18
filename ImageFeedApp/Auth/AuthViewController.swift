@@ -10,6 +10,7 @@ import UIKit
 final class AuthViewController: UIViewController {
     @IBOutlet private weak var loginButton: UIButton!
     private let segueId = "ShowWebView"
+    private let oauth2Service = OAuth2Service.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
