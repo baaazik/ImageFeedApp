@@ -23,6 +23,15 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         print("did load")
 
+        let dataStore = WKWebsiteDataStore.default()
+        
+        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records) {
+                print("Все куки и данные WebView удалены!")
+            }
+        }
+
+
         loadAuthView()
         webView.navigationDelegate = self
     }
@@ -99,7 +108,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            //TODO: process code
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
