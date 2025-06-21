@@ -8,7 +8,7 @@
 import UIKit
 
 enum NetworkError: Error {
-    case httpStatusCode(Int, Data)
+    case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
 }
@@ -29,11 +29,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
-                    fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode, data)))
+                    print("Error: service returned error: \(String(data: data, encoding: .utf8) ?? "unknown")")
+                    fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
+                print("Error: URL request error: \(error)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
+                print("Error: URL session error")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })

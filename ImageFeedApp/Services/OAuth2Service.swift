@@ -49,9 +49,11 @@ final class OAuth2Service {
                     completion(.success(response.access_token))
                 }
                 catch {
+                    print("Error: failed to deserialize JSON \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
+                print("Error: failed to make a request: \(error)")
                 completion(.failure(error))
             }
         })

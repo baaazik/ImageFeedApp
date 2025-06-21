@@ -60,9 +60,9 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case .success(let token):
                 let storage = OAuth2TokenStorage()
                 storage.token = token
-                print("Successfully get token")
+                print("Successfully got token")
             case .failure(let error):
-                print("Failed to get token: \(error)")
+                print("Error: failed to get OAuth 2 token: \(error)")
             }
         })
     }
