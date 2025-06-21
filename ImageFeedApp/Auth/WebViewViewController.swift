@@ -21,7 +21,8 @@ final class WebViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("did load")
+
+        print("Load WebViewViewController")
 
         let dataStore = WKWebsiteDataStore.default()
         

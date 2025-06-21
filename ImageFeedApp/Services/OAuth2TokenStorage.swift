@@ -14,12 +14,17 @@ final class OAuth2TokenStorage {
 
     private let storage: UserDefaults = .standard
 
-    var token: String {
+    var token: String? {
         get {
-            storage.string(forKey: Keys.oauthToken.rawValue) ?? ""
+            storage.string(forKey: Keys.oauthToken.rawValue)
         }
         set {
             storage.set(newValue, forKey: Keys.oauthToken.rawValue)
         }
+    }
+
+    // TODO: REMOVE BEFORE SUBMIT
+    func tokenDelete() {
+        UserDefaults.standard.removeObject(forKey: Keys.oauthToken.rawValue)
     }
 }

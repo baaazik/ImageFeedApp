@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
     @IBOutlet private weak var loginButton: UIButton!
     private let segueId = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
+    weak var delegate: AuthViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        print("Load AuthViewController")
 
         // The only way I found to keep bold text after press
         let attributes: [NSAttributedString.Key: Any] = [
@@ -55,20 +62,26 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchOAuthToken(code: code, completion: {result in
+        print("User logged in, get token")
+
+        oauth2Service.fetchOAuthToken(code: code, completion: { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(let token):
                 let storage = OAuth2TokenStorage()
-                storage.token = token
                 print("Successfully got token")
+                storage.token = token
+                delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("Error: failed to get OAuth 2 token: \(error)")
+                navigationController?.popToViewController(self, animated: true)
             }
         })
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        vc.dismiss(animated: true)
+        dismiss(animated: true)
     }
 
 }
