@@ -9,7 +9,7 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     private let segueId = "ShowAuthView"
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()

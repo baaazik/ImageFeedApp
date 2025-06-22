@@ -11,7 +11,33 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
 
-    func makeOAuthTokenRequest(code: String) -> URLRequest? {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            assertionFailure("Failed to create URLRequest")
+            return
+        }
+
+        let task = URLSession.shared.data(for: request, completion: {result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                    completion(.success(response.accessToken))
+                }
+                catch {
+                    print("Error: failed to deserialize JSON \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("Error: failed to make a request: \(error)")
+                completion(.failure(error))
+            }
+        })
+        task.resume()
+    }
+
+    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
             return nil
         }
@@ -29,38 +55,26 @@ final class OAuth2Service {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = HttpMethods.POST.rawValue
 
         return request
     }
+}
 
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            assertionFailure("Failed to create URLRequest")
-            return
-        }
+private struct OAuthTokenResponseBody: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+    }
 
-        let task = URLSession.shared.data(for: request, completion: {result in
-            switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    completion(.success(response.access_token))
-                }
-                catch {
-                    print("Error: failed to deserialize JSON \(error)")
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                print("Error: failed to make a request: \(error)")
-                completion(.failure(error))
-            }
-        })
-        task.resume()
+    var accessToken: String
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.accessToken = try container.decode(String.self, forKey: .accessToken)
     }
 }
 
-struct OAuthTokenResponseBody: Decodable {
-    var access_token: String
+private enum HttpMethods: String {
+    case GET
+    case POST
 }

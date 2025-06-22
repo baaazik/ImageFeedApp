@@ -21,17 +21,7 @@ final class WebViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         print("Load WebViewViewController")
-
-        let dataStore = WKWebsiteDataStore.default()
-        
-        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records) {
-                print("Все куки и данные WebView удалены!")
-            }
-        }
-
 
         loadAuthView()
         webView.navigationDelegate = self
@@ -59,6 +49,15 @@ final class WebViewViewController: UIViewController {
             updateProgress()
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+
+    private func clearCookies() {
+        let dataStore = WKWebsiteDataStore.default()
+        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records) {
+                print("WebView cookies are cleared")
+            }
         }
     }
 

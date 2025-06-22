@@ -12,6 +12,9 @@ final class OAuth2TokenStorage {
         case oauthToken
     }
 
+    static let shared = OAuth2TokenStorage()
+    private init() {}
+
     private let storage: UserDefaults = .standard
 
     var token: String? {
@@ -21,10 +24,5 @@ final class OAuth2TokenStorage {
         set {
             storage.set(newValue, forKey: Keys.oauthToken.rawValue)
         }
-    }
-
-    // TODO: REMOVE BEFORE SUBMIT
-    func tokenDelete() {
-        UserDefaults.standard.removeObject(forKey: Keys.oauthToken.rawValue)
     }
 }

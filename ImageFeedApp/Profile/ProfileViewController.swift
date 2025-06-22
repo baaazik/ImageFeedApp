@@ -9,7 +9,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private lazy var avatarImageView: UIImageView = {
-        let avatarImage = UIImage(named: "Photo")
+        let avatarImage = UIImage(resource: .photo)
         let avatarImageView = UIImageView()
         avatarImageView.image = avatarImage
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +44,7 @@ final class ProfileViewController: UIViewController {
     }()
 
     private lazy var exitButton: UIButton! = {
-        let buttonImage = UIImage(named: "Exit")
+        let buttonImage = UIImage(resource: .exit)
         let exitButton = UIButton()
         exitButton.setImage(buttonImage, for: .normal)
         exitButton.translatesAutoresizingMaskIntoConstraints = false

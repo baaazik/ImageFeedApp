@@ -15,6 +15,7 @@ final class AuthViewController: UIViewController {
     @IBOutlet private weak var loginButton: UIButton!
     private let segueId = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
+    private let storage = OAuth2TokenStorage.shared
     weak var delegate: AuthViewControllerDelegate?
 
     override func viewDidLoad() {
@@ -53,8 +54,8 @@ final class AuthViewController: UIViewController {
     }
 
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(resource: .navBackButton)
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(resource: .navBackButton)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor.ypBlack
     }
@@ -69,7 +70,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
 
             switch result {
             case .success(let token):
-                let storage = OAuth2TokenStorage()
                 print("Successfully got token")
                 storage.token = token
                 delegate?.didAuthenticate(self)
