@@ -35,8 +35,8 @@ final class ImagesListViewController: UIViewController {
         cell.photoImageView.image = image
         cell.dateText.text = dateFormatter.string(from: Date())
 
-        let likeImage = indexPath.row % 2 == 0 ? "ActiveLikeImage" : "LikeImage"
-        cell.likeButton.setImage(UIImage(named: likeImage), for: .normal)
+        let likeImage = indexPath.row % 2 == 0 ? ImageResource.activeLike : ImageResource.like
+        cell.likeButton.setImage(UIImage(resource: likeImage), for: .normal)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
