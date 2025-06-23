@@ -55,7 +55,7 @@ final class OAuth2Service {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = HttpMethods.POST.rawValue
+        request.httpMethod = HttpMethods.post.rawValue
 
         return request
     }
@@ -75,6 +75,6 @@ private struct OAuthTokenResponseBody: Decodable {
 }
 
 private enum HttpMethods: String {
-    case GET
-    case POST
+    case get = "GET"
+    case post = "POST"
 }
