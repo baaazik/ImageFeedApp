@@ -40,6 +40,8 @@ final class ProfileViewController: UIViewController {
         statusText.textColor = .ypWhite
         statusText.font = UIFont.systemFont(ofSize: 13)
         statusText.translatesAutoresizingMaskIntoConstraints = false
+        statusText.numberOfLines = 0
+        statusText.lineBreakMode = .byWordWrapping
         return statusText
     }()
 
@@ -51,10 +53,30 @@ final class ProfileViewController: UIViewController {
         return exitButton
     }()
 
+    private let profileService = ProfileService()
+    private let storage = OAuth2TokenStorage.shared
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         createElements()
+
+        guard let token = storage.token else {
+            return
+        }
+        profileService.fetchProfile(token, completion: { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success(let profile):
+                self.nameText.text = profile.name
+                self.accountText.text = profile.loginName
+                self.statusText.text = profile.bio
+            case .failure(let error):
+                print("Error: failed to load profile \(error)")
+            }
+        })
     }
 
     func createElements() {
@@ -78,6 +100,7 @@ final class ProfileViewController: UIViewController {
 
             statusText.topAnchor.constraint(equalTo: accountText.bottomAnchor, constant: 8),
             statusText.leadingAnchor.constraint(equalTo: accountText.leadingAnchor),
+            statusText.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
             exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
