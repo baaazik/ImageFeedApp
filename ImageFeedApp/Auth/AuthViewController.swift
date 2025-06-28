@@ -65,9 +65,12 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         print("User logged in, get token")
 
+        navigationController?.popToViewController(self, animated: true)
+        UIBlockingProgressHUD.show()
+
         oauth2Service.fetchOAuthToken(code: code, completion: { [weak self] result in
             guard let self = self else { return }
-
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):
                 print("Successfully got token")
@@ -75,7 +78,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("Error: failed to get OAuth 2 token: \(error)")
-                navigationController?.popToViewController(self, animated: true)
             }
         })
     }
