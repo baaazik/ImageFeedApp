@@ -25,4 +25,8 @@ final class OAuth2TokenStorage {
             storage.set(newValue, forKey: Keys.oauthToken.rawValue)
         }
     }
+
+    func tokenDelete() {
+        storage.removeObject(forKey: Keys.oauthToken.rawValue)
+    }
 }

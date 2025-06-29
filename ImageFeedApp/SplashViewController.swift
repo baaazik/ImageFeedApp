@@ -10,22 +10,29 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let segueId = "ShowAuthView"
     private let storage = OAuth2TokenStorage.shared
+    private let profileService = ProfileService.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Load SplashViewController")
+
+        if let token = storage.token {
+            // Don't call fetchProfile from viewDidAppear, because there will
+            // be a two calls of fetchProfile from viewDidAppear and from didAuthenticate.
+            // Therefore, second call fails and error message appears
+            print("Token exists")
+            fetchProfile(token)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("viewDidAppear")
 
-        if let _ = storage.token {
-            print("Token exists")
-            switchToTabBarController()
-        }
-        else {
+        guard let _ = storage.token else {
             print("No saved token, launch auth view")
             performSegue(withIdentifier: segueId, sender: self)
+            return
         }
     }
 
@@ -55,12 +62,33 @@ final class SplashViewController: UIViewController {
 
         window.rootViewController = tabBarController
     }
+
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let profile):
+                profileService.updateProfileDetails(profile: profile)
+                self.switchToTabBarController()
+            case .failure:
+                showErrorAlert(on: self, message: "Не удалось загрузить профиль")
+            }
+        }
+    }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         print("User successfully authenticated")
         vc.dismiss(animated: true)
-        switchToTabBarController()
+
+        guard let token = storage.token else {
+            return
+        }
+        fetchProfile(token)
     }
 }

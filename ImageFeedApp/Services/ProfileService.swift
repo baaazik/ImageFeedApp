@@ -11,7 +11,11 @@ enum ProfileServiceError: Error {
     case invalidRequest
 }
 final class ProfileService {
+    static let shared = ProfileService()
+    private init() {}
+
     private var task: URLSessionTask?
+    private(set) var profile: Profile?
 
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -68,6 +72,10 @@ final class ProfileService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         return request
+    }
+
+    func updateProfileDetails(profile: Profile) {
+        self.profile = profile
     }
 }
 

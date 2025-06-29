@@ -53,7 +53,7 @@ final class ProfileViewController: UIViewController {
         return exitButton
     }()
 
-    private let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     private let storage = OAuth2TokenStorage.shared
 
     override func viewDidLoad() {
@@ -61,22 +61,9 @@ final class ProfileViewController: UIViewController {
 
         createElements()
 
-        guard let token = storage.token else {
-            return
-        }
-        profileService.fetchProfile(token, completion: { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let profile):
-                self.nameText.text = profile.name
-                self.accountText.text = profile.loginName
-                self.statusText.text = profile.bio
-            case .failure(let error):
-                print("Error: failed to load profile \(error)")
-            }
-        })
+        nameText.text = profileService.profile?.name
+        accountText.text = profileService.profile?.loginName
+        statusText.text = profileService.profile?.bio
     }
 
     func createElements() {
