@@ -32,23 +32,15 @@ final class ProfileImageService {
             return
         }
 
-        let task = URLSession.shared.data(for: request, completion: { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(UserResult.self, from: data)
-                    completion(.success(response.profileImage.small))
-                    NotificationCenter.default
-                        .post(
-                            name: ProfileImageService.didChangeNotification,
-                            object: self,
-                            userInfo: ["URL": response.profileImage.small])
-                }
-                catch {
-                    print("Error: failed to deserialize JSON \(error)")
-                    completion(.failure(error))
-                }
+            case .success(let response):
+                completion(.success(response.profileImage.small))
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": response.profileImage.small])
             case .failure(let error):
                 print("Error: failed to make a request: \(error)")
                 completion(.failure(error))

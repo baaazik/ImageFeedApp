@@ -34,18 +34,10 @@ final class OAuth2Service {
             return
         }
         
-        let task = URLSession.shared.data(for: request, completion: { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+            case .success(let response):
                     completion(.success(response.accessToken))
-                }
-                catch {
-                    print("Error: failed to deserialize JSON \(error)")
-                    completion(.failure(error))
-                }
             case .failure(let error):
                 print("Error: failed to make a request: \(error)")
                 completion(.failure(error))

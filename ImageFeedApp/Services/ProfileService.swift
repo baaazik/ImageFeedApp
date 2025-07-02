@@ -30,25 +30,18 @@ final class ProfileService {
             return
         }
 
-        let task = URLSession.shared.data(for: request, completion: { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<ProfileResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(ProfileResult.self, from: data)
-                    let profile = Profile(username: response.username, name: "\(response.firstName) \(response.lastName ?? "")", loginName: "@\(response.username)", bio: response.bio ?? "")
-                    completion(.success(profile))
-                }
-                catch {
-                    print("Error: failed to deserialize JSON \(error)")
-                    completion(.failure(error))
-                }
+            case .success(let response):
+                let profile = Profile(username: response.username, name: "\(response.firstName) \(response.lastName ?? "")", loginName: "@\(response.username)", bio: response.bio ?? "")
+                completion(.success(profile))
             case .failure(let error):
                 print("Error: failed to make a request: \(error)")
                 completion(.failure(error))
             }
             self?.task = nil
         })
+
         self.task = task
         task.resume()
     }
