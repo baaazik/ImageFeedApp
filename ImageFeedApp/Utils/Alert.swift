@@ -7,9 +7,9 @@
 
 import UIKit
 
-func showErrorAlert(on viewController: UIViewController, message: String) {
+func showErrorAlert(on viewController: UIViewController, title: String, message: String) {
     let alert = UIAlertController(
-        title: "Ошибка",
+        title: title,
         message: message,
         preferredStyle: .alert
     )

@@ -20,7 +20,6 @@ final class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         print("[AuthViewController] load")
 
         // The only way I found to keep bold text after press
@@ -78,6 +77,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("[AuthViewController] failed to get OAuth 2 token: \(error)")
+                showErrorAlert(on: self, title: "Что-то пошло не так", message: "Не удалось войти в систему")
             }
         })
     }
