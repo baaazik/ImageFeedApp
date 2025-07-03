@@ -21,7 +21,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("Load AuthViewController")
+        print("[AuthViewController] load")
 
         // The only way I found to keep bold text after press
         let attributes: [NSAttributedString.Key: Any] = [
@@ -63,7 +63,7 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        print("User logged in, get token")
+        print("[AuthViewController] user logged in, get token")
 
         navigationController?.popToViewController(self, animated: true)
         UIBlockingProgressHUD.show()
@@ -73,11 +73,11 @@ extension AuthViewController: WebViewViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let token):
-                print("Successfully got token")
+                print("[AuthViewController] Successfully got token")
                 storage.token = token
                 delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("Error: failed to get OAuth 2 token: \(error)")
+                print("[AuthViewController] failed to get OAuth 2 token: \(error)")
             }
         })
     }

@@ -20,7 +20,7 @@ final class ProfileImageService {
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
 
         if let _ = task {
-            print("Error: request is already in progress")
+            print("[ProfileImageService] request is already in progress")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -28,7 +28,7 @@ final class ProfileImageService {
         guard
             let token = storage.token,
             let request = makeProfileRequest(token: token, username: username) else {
-            assertionFailure("Failed to create URLRequest")
+            assertionFailure("[ProfileImageService] Failed to create URLRequest")
             return
         }
 
@@ -42,7 +42,7 @@ final class ProfileImageService {
                         object: self,
                         userInfo: ["URL": response.profileImage.small])
             case .failure(let error):
-                print("Error: failed to make a request: \(error)")
+                print("[ProfileImageService] failed to make a request: \(error)")
                 completion(.failure(error))
             }
             self?.task = nil

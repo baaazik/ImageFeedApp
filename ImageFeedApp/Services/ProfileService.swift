@@ -21,12 +21,12 @@ final class ProfileService {
         assert(Thread.isMainThread)
         
         if let _ = task {
-            print("Error: request is already in progress")
+            print("[ProfileService] request is already in progress")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
         guard let request = makeProfileRequest(token: token) else {
-            assertionFailure("Failed to create URLRequest")
+            assertionFailure("[ProfileService] Failed to create URLRequest")
             return
         }
 
@@ -36,7 +36,7 @@ final class ProfileService {
                 let profile = Profile(username: response.username, name: "\(response.firstName) \(response.lastName ?? "")", loginName: "@\(response.username)", bio: response.bio ?? "")
                 completion(.success(profile))
             case .failure(let error):
-                print("Error: failed to make a request: \(error)")
+                print("[ProfileService] failed to make a request: \(error)")
                 completion(.failure(error))
             }
             self?.task = nil

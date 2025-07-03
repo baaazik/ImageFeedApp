@@ -21,7 +21,7 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else {
-            print("Error: request is already in progress")
+            print("[OAuth2Service] request is already in progress")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -30,7 +30,7 @@ final class OAuth2Service {
         lastCode = code
 
         guard let request = makeOAuthTokenRequest(code: code) else {
-            assertionFailure("Failed to create URLRequest")
+            assertionFailure("[OAuth2Service] Failed to create URLRequest")
             return
         }
         
@@ -39,7 +39,7 @@ final class OAuth2Service {
             case .success(let response):
                     completion(.success(response.accessToken))
             case .failure(let error):
-                print("Error: failed to make a request: \(error)")
+                print("[OAuth2Service] failed to make a request: \(error)")
                 completion(.failure(error))
             }
             self?.task = nil

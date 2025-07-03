@@ -14,23 +14,22 @@ final class SplashViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Load SplashViewController")
+        print("[SplashViewController] load")
 
         if let token = storage.token {
             // Don't call fetchProfile from viewDidAppear, because there will
             // be a two calls of fetchProfile from viewDidAppear and from didAuthenticate.
             // Therefore, second call fails and error message appears
-            print("Token exists")
+            print("[SplashViewController] token exists")
             fetchProfile(token)
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
 
         guard let _ = storage.token else {
-            print("No saved token, launch auth view")
+            print("[SplashViewController] no saved token, launch auth view")
             performSegue(withIdentifier: segueId, sender: self)
             return
         }
@@ -43,7 +42,7 @@ final class SplashViewController: UIViewController {
                 let auth = navigation.viewControllers[0] as? AuthViewController,
                 let delegate = sender as? AuthViewControllerDelegate
             else {
-                assertionFailure("Invalid segue destination")
+                assertionFailure("[SplashViewController] invalid segue destination")
                 return
             }
 
@@ -53,7 +52,7 @@ final class SplashViewController: UIViewController {
 
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
+            assertionFailure("[SplashViewController] invalid window configuration")
             return
         }
 
@@ -72,22 +71,22 @@ final class SplashViewController: UIViewController {
 
             switch result {
             case .success(let profile):
-                print("Loaded profile")
+                print("[SplashViewController] loaded profile")
                 self.profileService.updateProfileDetails(profile: profile)
 
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
                     switch result {
                     case .success(let imageURL):
-                        print("Loaded profile image")
+                        print("[SplashViewController] loaded profile image")
                         ProfileImageService.shared.updateProfileImage(avatarURL: imageURL)
                     case .failure(let error):
-                        print("Error: failed to load profile image URL \(error)")
+                        print("[SplashViewController] failed to load profile image URL \(error)")
                     }
                 }
 
                 self.switchToTabBarController()
             case .failure(let error):
-                print("Error: failed to load profile: \(error)")
+                print("[SplashViewController] failed to load profile: \(error)")
                 showErrorAlert(on: self, message: "Не удалось загрузить профиль")
             }
         }
@@ -96,7 +95,7 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
-        print("User successfully authenticated")
+        print("[SplashViewController] user successfully authenticated")
         vc.dismiss(animated: true)
 
         guard let token = storage.token else {

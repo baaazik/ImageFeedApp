@@ -21,7 +21,7 @@ final class WebViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Load WebViewViewController")
+        print("[WebViewViewController] load")
 
         loadAuthView()
         webView.navigationDelegate = self
@@ -40,7 +40,7 @@ final class WebViewViewController: UIViewController {
         let dataStore = WKWebsiteDataStore.default()
         dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records) {
-                print("WebView cookies are cleared")
+                print("[WebViewViewController] WebView cookies are cleared")
             }
         }
     }

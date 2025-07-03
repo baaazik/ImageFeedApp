@@ -29,14 +29,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
-                    print("Error: service returned error: \(String(data: data, encoding: .utf8) ?? "unknown")")
+                    print("[data] service returned error: \(String(data: data, encoding: .utf8) ?? "unknown"), request: \(request)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
-                print("Error: URL request error: \(error)")
+                print("[data] URL request error: \(error), request: \(request)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
-                print("Error: URL session error")
+                print("[data] URL session error, request \(request)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
@@ -57,11 +57,11 @@ extension URLSession {
                     completion(.success(response))
                 }
                 catch {
-                    print("Error: failed to deserialize JSON \(error)")
+                    print("[objectTask] failed to deserialize JSON: \(error), data: \(String(data: data, encoding: .utf8) ?? "")")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                print("Error: failed to make a request: \(error)")
+                print("[objectTask] failed to make a request: \(error)")
                 completion(.failure(error))
             }
         }
