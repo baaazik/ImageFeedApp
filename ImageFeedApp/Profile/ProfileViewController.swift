@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    private let avatarImageViewSize = 70.0
+
     private lazy var avatarImageView: UIImageView = {
         let avatarImage = UIImage(resource: .photo)
         let avatarImageView = UIImageView()
         avatarImageView.image = avatarImage
+        avatarImageView.layer.cornerRadius = avatarImageViewSize / 2
+        avatarImageView.layer.masksToBounds = true
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         return avatarImageView
     }()
@@ -83,7 +88,10 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO: [Sprint 11] Обновить аватар, используя Kingfisher
+
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(resource: .avatarPlaceholder))
     }
 
     func createElements() {
@@ -96,8 +104,8 @@ final class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 70),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 70),
+            avatarImageView.widthAnchor.constraint(equalToConstant: avatarImageViewSize),
+            avatarImageView.heightAnchor.constraint(equalToConstant: avatarImageViewSize),
 
             nameText.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
             nameText.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),

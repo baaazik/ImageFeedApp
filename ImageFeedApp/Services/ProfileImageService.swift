@@ -35,12 +35,13 @@ final class ProfileImageService {
         let task = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let response):
-                completion(.success(response.profileImage.small))
+                let image = response.profileImage.small
+                completion(.success(image))
                 NotificationCenter.default
                     .post(
                         name: ProfileImageService.didChangeNotification,
                         object: self,
-                        userInfo: ["URL": response.profileImage.small])
+                        userInfo: ["URL": image])
             case .failure(let error):
                 print("[ProfileImageService] failed to make a request: \(error)")
                 completion(.failure(error))
@@ -93,4 +94,6 @@ private struct UserResult: Codable {
 
 private struct ProfileImage: Codable {
     var small: String
+    var medium: String
+    var large: String
 }
