@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
     private enum Keys: String {
@@ -19,14 +20,23 @@ final class OAuth2TokenStorage {
 
     var token: String? {
         get {
-            storage.string(forKey: Keys.oauthToken.rawValue)
+            KeychainWrapper.standard.string(forKey: Keys.oauthToken.rawValue)
         }
         set {
-            storage.set(newValue, forKey: Keys.oauthToken.rawValue)
+            guard let newValue else {
+                return
+            }
+            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: Keys.oauthToken.rawValue)
+            if !isSuccess {
+                print("[OAuth2TokenStorage] failed to save token")
+            }
         }
     }
 
     func tokenDelete() {
-        storage.removeObject(forKey: Keys.oauthToken.rawValue)
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: Keys.oauthToken.rawValue)
+        if !removeSuccessful {
+            print("[OAuth2TokenStorage] failed to remove token")
+        }
     }
 }
