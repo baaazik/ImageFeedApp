@@ -14,49 +14,33 @@ enum WebViewConstants {
 
 final class WebViewViewController: UIViewController {
 
-
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
+    private var observer: NSKeyValueObservation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Load WebViewViewController")
+        print("[WebViewViewController] load")
 
         loadAuthView()
         webView.navigationDelegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
-    }
-
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        observer = webView.observe(
+                \.estimatedProgress,
+                 options: [.new]
+            ) { [weak self] webView, change in
+                self?.updateProgress()
+            }
     }
 
     private func clearCookies() {
         let dataStore = WKWebsiteDataStore.default()
         dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records) {
-                print("WebView cookies are cleared")
+                print("[WebViewViewController] WebView cookies are cleared")
             }
         }
     }
