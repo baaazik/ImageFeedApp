@@ -11,10 +11,19 @@ final class SplashViewController: UIViewController {
     private let segueId = "ShowAuthView"
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
+    private lazy var logo: UIImageView = {
+        let logoImage = UIImage(resource: .splashScreen)
+        let logoImageView = UIImageView()
+        logoImageView.image = logoImage
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        return logoImageView
+
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         print("[SplashViewController] load")
+        createElements()
 
         if let token = storage.token {
             // Don't call fetchProfile from viewDidAppear, because there will
@@ -30,23 +39,15 @@ final class SplashViewController: UIViewController {
 
         guard let _ = storage.token else {
             print("[SplashViewController] no saved token, launch auth view")
-            performSegue(withIdentifier: segueId, sender: self)
-            return
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == segueId {
-            guard
-                let navigation = segue.destination as? UINavigationController,
-                let auth = navigation.viewControllers[0] as? AuthViewController,
-                let delegate = sender as? AuthViewControllerDelegate
-            else {
-                assertionFailure("[SplashViewController] invalid segue destination")
+            let storyboard = UIStoryboard(name: "Main", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController")
+            guard let viewController = viewController as? AuthViewController else {
                 return
             }
-
-            auth.delegate = delegate
+            viewController.delegate = self
+            viewController.modalPresentationStyle = .fullScreen
+            present(viewController, animated: true)
+            return
         }
     }
 
@@ -90,6 +91,18 @@ final class SplashViewController: UIViewController {
                 showErrorAlert(on: self, title: "Что-то пошло не так", message: "Не удалось загрузить профиль")
             }
         }
+    }
+
+    private func createElements() {
+        view.addSubview(logo)
+        view.backgroundColor = .ypBlack
+
+        NSLayoutConstraint.activate([
+            logo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logo.widthAnchor.constraint(equalToConstant: 75),
+            logo.heightAnchor.constraint(equalToConstant: 78),
+        ])
     }
 }
 

@@ -95,7 +95,7 @@ final class ProfileViewController: UIViewController {
             placeholder: UIImage(resource: .avatarPlaceholder))
     }
 
-    func createElements() {
+    private func createElements() {
         view.addSubview(avatarImageView)
         view.addSubview(nameText)
         view.addSubview(accountText)

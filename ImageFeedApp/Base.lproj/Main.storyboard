@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vz4-uf-VJ5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,24 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Splash View Controller-->
-        <scene sceneID="y2H-vA-MaK">
-            <objects>
-                <viewController id="Vz4-uf-VJ5" customClass="SplashViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Rsm-Tx-lIz">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="akR-ZQ-l35"/>
-                        <color key="backgroundColor" name="YPBlack"/>
-                    </view>
-                    <connections>
-                        <segue destination="1BM-hi-mMk" kind="presentation" identifier="ShowAuthView" id="bYG-ac-yjL"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uA9-Bf-9ze" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1480" y="-382"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="C7F-Hg-Gmb">
             <objects>
@@ -154,13 +136,13 @@
         <!--Auth View Controller-->
         <scene sceneID="i9T-df-SYK">
             <objects>
-                <viewController id="6Jt-kM-gxe" customClass="AuthViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthViewController" id="6Jt-kM-gxe" customClass="AuthViewController" customModule="ImageFeedApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0j8-Y9-T6t">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDL-mw-mFh">
-                                <rect key="frame" x="16" y="784" width="408" height="48"/>
+                                <rect key="frame" x="16" y="750" width="408" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="2rX-T2-Q2A"/>
                                 </constraints>
@@ -217,7 +199,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ago-az-Scp">
-                                <rect key="frame" x="0.0" y="106" width="440" height="850"/>
+                                <rect key="frame" x="0.0" y="168" width="440" height="788"/>
                                 <color key="backgroundColor" name="YPWhite"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -225,7 +207,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wY9-0d-dTo">
-                                <rect key="frame" x="0.0" y="106" width="440" height="4"/>
+                                <rect key="frame" x="0.0" y="168" width="440" height="4"/>
                                 <color key="progressTintColor" name="YPBlack"/>
                             </progressView>
                         </subviews>
@@ -328,7 +310,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="XDJ-ba-o9v"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eSg-Dw-azf">
-                        <rect key="frame" x="0.0" y="62" width="440" height="44"/>
+                        <rect key="frame" x="0.0" y="124" width="440" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
