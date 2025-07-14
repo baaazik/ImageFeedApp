@@ -93,7 +93,7 @@ private struct UserResult: Codable {
 }
 
 private struct ProfileImage: Codable {
-    var small: String
-    var medium: String
-    var large: String
+    let small: String
+    let medium: String
+    let large: String
 }

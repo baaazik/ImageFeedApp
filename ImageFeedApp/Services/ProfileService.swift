@@ -72,7 +72,7 @@ final class ProfileService {
     }
 }
 
-private struct ProfileResult: Codable {
+private struct ProfileResult: Decodable {
     enum CodingKeys: String, CodingKey {
         case username = "username"
         case firstName = "first_name"
@@ -80,10 +80,10 @@ private struct ProfileResult: Codable {
         case bio = "bio"
     }
 
-    var username: String
-    var firstName: String
-    var lastName: String?
-    var bio: String?
+    let username: String
+    let firstName: String
+    let lastName: String?
+    let bio: String?
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -96,8 +96,8 @@ private struct ProfileResult: Codable {
 }
 
 struct Profile {
-    var username: String
-    var name: String
-    var loginName: String
-    var bio: String
+    let username: String
+    let name: String
+    let loginName: String
+    let bio: String
 }
