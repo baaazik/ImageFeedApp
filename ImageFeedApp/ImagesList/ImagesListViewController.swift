@@ -92,4 +92,12 @@ extension ImagesListViewController: UITableViewDelegate {
 
         return imageViewHeight + 2 * 8
     }
+
+    func tableView(
+      _ tableView: UITableView,
+      willDisplay cell: UITableViewCell,
+      forRowAt indexPath: IndexPath
+    ) {
+        // ...
+    }
 }
