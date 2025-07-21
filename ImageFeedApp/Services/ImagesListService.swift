@@ -18,11 +18,11 @@ final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
 
     func fetchPhotosNextPage() {
-        let nextPage = (lastLoadedPage ?? 0) + 1
-
         if let _ = task {
             return
         }
+
+        let nextPage = (lastLoadedPage ?? 0) + 1
 
         guard
             let token = storage.token,
@@ -51,6 +51,8 @@ final class ImagesListService {
                         self.photos.append(photo)
                     }
 
+                    self.lastLoadedPage = nextPage
+
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
                         object: nil,
@@ -69,7 +71,7 @@ final class ImagesListService {
 
     private func makeImagesRequest(token: String, page: Int) -> URLRequest? {
         guard
-            let baseURL = Constants.defaultBaseURL,
+            let baseURL = Constants.fakeBaseURL,
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         else {
             return nil

@@ -6,14 +6,18 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
 
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imageListService = ImagesListService()
+    private var imageServiceObserver: NSObjectProtocol?
+    private let placeholder = UIImage(resource: .imagePlaceholder)
 
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -24,15 +28,28 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+
+        imageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateTableViewAnimated()
+            }
+
+        imageListService.fetchPhotosNextPage()
     }
 
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let imageName = photosName[indexPath.row]
-        guard let image = UIImage(named: imageName) else {
-            return
-        }
-        
-        cell.photoImageView.image = image
+        let photo = photos[indexPath.row]
+
+        cell.photoImageView.kf.indicatorType = .activity
+        cell.photoImageView.kf.setImage(
+            with: URL(string: photo.thumbImageURL),
+            placeholder: placeholder)
+
         cell.dateText.text = dateFormatter.string(from: Date())
 
         let likeImage = indexPath.row % 2 == 0 ? ImageResource.activeLike : ImageResource.like
@@ -49,17 +66,31 @@ final class ImagesListViewController: UIViewController {
                 return
             }
 
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            //let image = UIImage(named: photos[indexPath.row])
+            //viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+
+    private func updateTableViewAnimated() {
+        var rows: [IndexPath] = []
+
+        for i in photos.count..<imageListService.photos.count {
+            rows.append(IndexPath(row: i, section: 0))
+        }
+
+        photos = imageListService.photos
+
+        tableView.performBatchUpdates {
+            self.tableView.insertRows(at: rows, with: .automatic)
+        } completion: { _ in }
     }
 }
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        photosName.count
+        photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,15 +111,10 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let imageName = photosName[indexPath.row]
-        guard let image = UIImage(named: imageName) else {
-            return 0
-        }
+        let photo = photos[indexPath.row]
 
         let imageViewWidth = tableView.bounds.width - 2 * 16
-        let imageWidth = image.size.width
-        let imageHeight = image.size.height
-        let imageViewHeight = (imageViewWidth * imageHeight) / imageWidth
+        let imageViewHeight = (imageViewWidth * photo.size.height) / photo.size.width
 
         return imageViewHeight + 2 * 8
     }
@@ -98,6 +124,10 @@ extension ImagesListViewController: UITableViewDelegate {
       willDisplay cell: UITableViewCell,
       forRowAt indexPath: IndexPath
     ) {
-        // ...
+        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
+
+        if indexPath.row == lastRowIndex {
+            imageListService.fetchPhotosNextPage()
+        }
     }
 }
