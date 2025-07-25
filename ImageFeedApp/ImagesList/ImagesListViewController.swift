@@ -52,8 +52,9 @@ final class ImagesListViewController: UIViewController {
 
         cell.dateText.text = dateFormatter.string(from: Date())
 
-        let likeImage = indexPath.row % 2 == 0 ? ImageResource.activeLike : ImageResource.like
-        cell.likeButton.setImage(UIImage(resource: likeImage), for: .normal)
+        cell.setIsLiked(isLiked: photo.isLiked)
+
+        cell.delegate = self
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -128,6 +129,26 @@ extension ImagesListViewController: UITableViewDelegate {
 
         if indexPath.row == lastRowIndex {
             imageListService.fetchPhotosNextPage()
+        }
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            switch result {
+            case .success:
+                self.photos = self.imageListService.photos
+                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                showErrorAlert(on: self, title: "Ошибка", message: "Не удалось поставить лайк")
+            }
         }
     }
 }

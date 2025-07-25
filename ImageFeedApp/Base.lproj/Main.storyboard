@@ -64,6 +64,9 @@
                                                     <buttonConfiguration key="configuration" style="plain" image="LikeImage" title="">
                                                         <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
                                                     </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="likeButtonAction:" destination="rO3-RB-Pvq" eventType="touchUpInside" id="NRa-Bm-Wb7"/>
+                                                    </connections>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="9lt-wm-onX">
                                                     <rect key="frame" x="16" y="188" width="408" height="30"/>

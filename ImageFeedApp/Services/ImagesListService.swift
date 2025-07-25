@@ -10,7 +10,8 @@ import UIKit
 final class ImagesListService {
     private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
-    private var task: URLSessionTask?
+    private var fetchTask: URLSessionTask?
+    private var likeTask: URLSessionTask?
     private let storage = OAuth2TokenStorage.shared
 
     private let photosPerPage = 10
@@ -18,7 +19,7 @@ final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
 
     func fetchPhotosNextPage() {
-        if let _ = task {
+        if let _ = fetchTask {
             return
         }
 
@@ -62,16 +63,59 @@ final class ImagesListService {
             case .failure(let error):
                 print("[ImageListService] failed to make a request: \(error)")
             }
-            self.task = nil
+            self.fetchTask = nil
         })
 
-        self.task = task
+        self.fetchTask = task
+        task.resume()
+    }
+
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        if let _ = likeTask {
+            return
+        }
+
+        guard
+            let token = storage.token,
+            let request = makeLikeRequest(token: token, isLike: isLike, id: photoId) else {
+            assertionFailure("[ImageListService] Failed to create URLRequest")
+            return
+        }
+
+        let task = URLSession.shared.data(for: request, completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = newPhoto
+                    //self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                }
+
+                completion(.success(()))
+            case .failure(let error):
+                print("[ImageListService] failed to like \(error)")
+                completion(.failure(error))
+            }
+            self.likeTask = nil
+        })
+
+        self.likeTask = task
         task.resume()
     }
 
     private func makeImagesRequest(token: String, page: Int) -> URLRequest? {
         guard
-            let baseURL = Constants.fakeBaseURL,
+            let baseURL = Constants.defaultBaseURL,
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         else {
             return nil
@@ -95,6 +139,32 @@ final class ImagesListService {
 
         return request
     }
+
+    private func makeLikeRequest(token: String, isLike: Bool, id: String) -> URLRequest? {
+        guard
+            let baseURL = Constants.defaultBaseURL,
+            var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
+        else {
+            return nil
+        }
+
+        components.path += "photos/\(id)/like"
+
+        guard let url = components.url else {
+            return nil
+        }
+
+        var request = URLRequest(url: url)
+        if !isLike {
+            request.httpMethod = HttpMethods.delete.rawValue
+        }
+        else {
+            request.httpMethod = HttpMethods.post.rawValue
+        }
+
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
 }
 
 struct Photo {
@@ -107,7 +177,7 @@ struct Photo {
     let isLiked: Bool
 }
 
-struct PhotoResult: Decodable {
+private struct PhotoResult: Decodable {
     let id: String
     let createdAt: Date
     let width: Int
@@ -143,7 +213,7 @@ struct PhotoResult: Decodable {
     }
 }
 
-struct Urls: Decodable {
+private struct Urls: Decodable {
     let thumb: String
     let full: String
 }
