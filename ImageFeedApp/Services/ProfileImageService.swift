@@ -52,6 +52,10 @@ final class ProfileImageService {
         task.resume()
     }
 
+    func clear() {
+        avatarURL = nil
+    }
+
     private func makeProfileRequest(token: String, username: String) -> URLRequest? {
         guard
             let baseURL = Constants.defaultBaseURL,
