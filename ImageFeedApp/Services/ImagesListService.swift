@@ -45,7 +45,7 @@ final class ImagesListService {
                             size: CGSize(width: photoResult.width, height: photoResult.height),
                             createdAt: photoResult.createdAt,
                             welcomeDescription: photoResult.description,
-                            thumbImageURL: photoResult.urls.thumb,
+                            thumbImageURL: photoResult.urls.small,
                             largeImageURL: photoResult.urls.full,
                             isLiked: photoResult.likedByUser
                         )
@@ -98,7 +98,6 @@ final class ImagesListService {
                         isLiked: !photo.isLiked
                     )
                     self.photos[index] = newPhoto
-                    //self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
                 }
 
                 completion(.success(()))
@@ -214,6 +213,9 @@ private struct PhotoResult: Decodable {
 }
 
 private struct Urls: Decodable {
-    let thumb: String
+    let raw: String
     let full: String
+    let regular: String
+    let small: String
+    let thumb: String
 }
