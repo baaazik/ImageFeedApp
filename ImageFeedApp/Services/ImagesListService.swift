@@ -61,7 +61,7 @@ final class ImagesListService {
                     )
                 }
             case .failure(let error):
-                print("[ImageListService] failed to make a request: \(error)")
+                print("[ImageListService] failed to load photos: \(error)")
             }
             self.fetchTask = nil
         })
@@ -178,7 +178,7 @@ struct Photo {
 
 private struct PhotoResult: Decodable {
     let id: String
-    let createdAt: Date
+    let createdAt: Date?
     let width: Int
     let height: Int
     let description: String?
@@ -199,11 +199,7 @@ private struct PhotoResult: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         let dateStr = try container.decode(String.self, forKey: .createdAt)
-        if let createdAt = ISO8601DateFormatter().date(from: dateStr) {
-            self.createdAt = createdAt
-        } else {
-            self.createdAt = Date()
-        }
+        createdAt = ISO8601DateFormatter().date(from: dateStr)
         self.width = try container.decode(Int.self, forKey: .width)
         self.height = try container.decode(Int.self, forKey: .height)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)

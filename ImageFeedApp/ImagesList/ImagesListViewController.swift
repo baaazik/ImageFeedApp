@@ -15,7 +15,7 @@ final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imageListService = ImagesListService()
     private var imageServiceObserver: NSObjectProtocol?
-    private let placeholder = UIImage(resource: .imagePlaceholder)
+    private let placeholder = UIImage(resource: .stub)
 
     private var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
@@ -50,7 +50,11 @@ final class ImagesListViewController: UIViewController {
             with: URL(string: photo.thumbImageURL),
             placeholder: placeholder)
 
-        cell.dateText.text = dateFormatter.string(from: Date())
+        if let createdAt = photo.createdAt {
+            cell.dateText.text = dateFormatter.string(from: createdAt)
+        } else {
+            cell.dateText.text = ""
+        }
 
         cell.setIsLiked(isLiked: photo.isLiked)
 
