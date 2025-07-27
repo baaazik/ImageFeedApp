@@ -9,6 +9,7 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
 
+    var placeholder: CALayer?
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dateText: UILabel!

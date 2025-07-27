@@ -23,7 +23,7 @@ final class ProfileViewController: UIViewController {
 
     private lazy var nameText: UILabel! = {
         let nameText = UILabel()
-        nameText.text = "Екатерина Новикова"
+        nameText.text = ""
         nameText.textColor = .ypWhite
         nameText.font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         nameText.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ final class ProfileViewController: UIViewController {
 
     private lazy var accountText: UILabel! = {
         let accountText = UILabel()
-        accountText.text = "@ekaterina_nov"
+        accountText.text = ""
         accountText.textColor = .ypGray
         accountText.font = UIFont.systemFont(ofSize: 13)
         accountText.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ final class ProfileViewController: UIViewController {
 
     private lazy var statusText: UILabel! = {
         let statusText = UILabel()
-        statusText.text = "Hello, world!"
+        statusText.text = ""
         statusText.textColor = .ypWhite
         statusText.font = UIFont.systemFont(ofSize: 13)
         statusText.translatesAutoresizingMaskIntoConstraints = false
@@ -63,16 +63,14 @@ final class ProfileViewController: UIViewController {
     private let storage = OAuth2TokenStorage.shared
     private let logoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    private var animationLayers: [CALayer] = []
+    private var isLoaded: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .ypBlack
         createElements()
-
-        nameText.text = profileService.profile?.name
-        accountText.text = profileService.profile?.loginName
-        statusText.text = profileService.profile?.bio
 
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
@@ -81,12 +79,19 @@ final class ProfileViewController: UIViewController {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.updateProfile()
             }
-        updateAvatar()
+        updateProfile()
     }
 
-    private func updateAvatar() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isLoaded {
+            showPlaceholderAnimation()
+        }
+    }
+
+    private func updateProfile() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
@@ -94,7 +99,21 @@ final class ProfileViewController: UIViewController {
 
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(resource: .avatarPlaceholder))
+            placeholder: UIImage(resource: .avatarPlaceholder)) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.isLoaded = true
+                        self.nameText.text = self.profileService.profile?.name
+                        self.accountText.text = self.profileService.profile?.loginName
+                        self.statusText.text = self.profileService.profile?.bio
+                        self.hidePlaceholderAnimation()
+                    }
+                case .failure(let error):
+                    print("[ProfileViewController] failed to load profile image: \(error)")
+                }
+            }
     }
 
     private func createElements() {
@@ -112,19 +131,48 @@ final class ProfileViewController: UIViewController {
 
             nameText.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
             nameText.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            nameText.heightAnchor.constraint(equalToConstant: 18),
 
             accountText.topAnchor.constraint(equalTo: nameText.bottomAnchor, constant: 8),
             accountText.leadingAnchor.constraint(equalTo: nameText.leadingAnchor),
+            accountText.heightAnchor.constraint(equalToConstant: 18),
 
             statusText.topAnchor.constraint(equalTo: accountText.bottomAnchor, constant: 8),
             statusText.leadingAnchor.constraint(equalTo: accountText.leadingAnchor),
             statusText.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            accountText.heightAnchor.constraint(equalToConstant: 18),
 
             exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exitButton.widthAnchor.constraint(equalToConstant: 44),
             exitButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+    }
+
+    private func showPlaceholderAnimation() {
+        let avatarGradient = CreateGradient(size: CGSize(width: avatarImageViewSize, height: avatarImageViewSize), cornerRadius: avatarImageViewSize / 2)
+        avatarImageView.layer.addSublayer(avatarGradient)
+
+        let nameGradient = CreateGradient(size: CGSize(width: 223, height: 18), cornerRadius: 9)
+        nameText.layer.addSublayer(nameGradient)
+
+        let accountGradient = CreateGradient(size: CGSize(width: 89, height: 18), cornerRadius: 9)
+        accountText.layer.addSublayer(accountGradient)
+
+        let statusGradient = CreateGradient(size: CGSize(width: 57, height: 18), cornerRadius: 9)
+        statusText.layer.addSublayer(statusGradient)
+
+        animationLayers.append(contentsOf: [avatarGradient, nameGradient, accountGradient, statusGradient])
+    }
+
+    private func hidePlaceholderAnimation() {
+        for layer in animationLayers {
+            layer.removeFromSuperlayer()
+        }
+    }
+
+    private func increaseSize(size: CGSize, padding: CGFloat) -> CGSize {
+        return CGSize(width: size.width, height: size.height + padding * 2)
     }
 
     @objc func logoutTapped() {

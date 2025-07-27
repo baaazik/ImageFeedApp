@@ -45,10 +45,19 @@ final class ImagesListViewController: UIViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
 
-        cell.photoImageView.kf.indicatorType = .activity
+        let layer = CreateGradient(size: cell.photoImageView.bounds.size , cornerRadius: cell.photoImageView.layer.cornerRadius)
+        cell.photoImageView.layer.addSublayer(layer)
+        cell.placeholder = layer
         cell.photoImageView.kf.setImage(
-            with: URL(string: photo.thumbImageURL),
-            placeholder: placeholder)
+            with: URL(string: photo.thumbImageURL)) { [weak cell] result in
+                guard let cell = cell else { return }
+                switch result {
+                case .success:
+                    cell.placeholder?.removeFromSuperlayer()
+                case .failure(let error):
+                    print("[ImageListViewController] failed to load image: \(error)")
+                }
+            }
 
         if let createdAt = photo.createdAt {
             cell.dateText.text = dateFormatter.string(from: createdAt)
