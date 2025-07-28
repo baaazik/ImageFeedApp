@@ -72,17 +72,3 @@ final class OAuth2Service {
         return request
     }
 }
-
-private struct OAuthTokenResponseBody: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-    }
-    
-    let accessToken: String
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.accessToken = try container.decode(String.self, forKey: .accessToken)
-    }
-}
-

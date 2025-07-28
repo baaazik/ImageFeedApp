@@ -40,15 +40,7 @@ final class ImagesListService {
             case .success(let response):
                 DispatchQueue.main.async {
                     for photoResult in response {
-                        let photo = Photo(
-                            id: photoResult.id,
-                            size: CGSize(width: photoResult.width, height: photoResult.height),
-                            createdAt: photoResult.createdAt,
-                            welcomeDescription: photoResult.description,
-                            thumbImageURL: photoResult.urls.small,
-                            largeImageURL: photoResult.urls.full,
-                            isLiked: photoResult.likedByUser
-                        )
+                        let photo = Photo(from: photoResult)
                         self.photos.append(photo)
                     }
 
@@ -164,54 +156,4 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-}
-
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-}
-
-private struct PhotoResult: Decodable {
-    let id: String
-    let createdAt: Date?
-    let width: Int
-    let height: Int
-    let description: String?
-    let likedByUser: Bool
-    let urls: Urls
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case createdAt = "created_at"
-        case width
-        case height
-        case description
-        case likedByUser = "liked_by_user"
-        case urls
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        let dateStr = try container.decode(String.self, forKey: .createdAt)
-        createdAt = ISO8601DateFormatter().date(from: dateStr)
-        self.width = try container.decode(Int.self, forKey: .width)
-        self.height = try container.decode(Int.self, forKey: .height)
-        self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.likedByUser = try container.decode(Bool.self, forKey: .likedByUser)
-        self.urls = try container.decode(Urls.self, forKey: .urls)
-    }
-}
-
-private struct Urls: Decodable {
-    let raw: String
-    let full: String
-    let regular: String
-    let small: String
-    let thumb: String
 }
