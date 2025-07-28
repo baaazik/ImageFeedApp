@@ -128,8 +128,23 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc func logoutTapped() {
-        logoutService.logout()
-        switchToSplashController()
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.logoutService.logout()
+            self.switchToSplashController()
+        }
+
+        let noAction = UIAlertAction(title: "Нет", style: .default)
+
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+
+        present(alert, animated: true, completion: nil)
     }
 
     private func switchToSplashController() {
