@@ -54,12 +54,14 @@ final class ProfileViewController: UIViewController {
         let buttonImage = UIImage(resource: .exit)
         let exitButton = UIButton()
         exitButton.setImage(buttonImage, for: .normal)
+        exitButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         return exitButton
     }()
 
     private let profileService = ProfileService.shared
     private let storage = OAuth2TokenStorage.shared
+    private let logoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
@@ -123,5 +125,34 @@ final class ProfileViewController: UIViewController {
             exitButton.widthAnchor.constraint(equalToConstant: 44),
             exitButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+    }
+
+    @objc func logoutTapped() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.logoutService.logout()
+            self.switchToSplashController()
+        }
+
+        let noAction = UIAlertAction(title: "Нет", style: .default)
+
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func switchToSplashController() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("[ProfileLogoutService] invalid window configuration")
+            return
+        }
+
+        window.rootViewController = SplashViewController()
     }
 }

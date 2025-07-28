@@ -52,6 +52,10 @@ final class ProfileImageService {
         task.resume()
     }
 
+    func clear() {
+        avatarURL = nil
+    }
+
     private func makeProfileRequest(token: String, username: String) -> URLRequest? {
         guard
             let baseURL = Constants.defaultBaseURL,
@@ -77,23 +81,4 @@ final class ProfileImageService {
         self.avatarURL = avatarURL
     }
 
-}
-
-private struct UserResult: Codable {
-    enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-
-    var profileImage: ProfileImage
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.profileImage = try container.decode(ProfileImage.self, forKey: .profileImage)
-    }
-}
-
-private struct ProfileImage: Codable {
-    let small: String
-    let medium: String
-    let large: String
 }
