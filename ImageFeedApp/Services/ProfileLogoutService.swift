@@ -21,7 +21,6 @@ final class ProfileLogoutService {
         tokenStorage.tokenDelete()
         profileService.clear()
         profileImageService.clear()
-        switchToSplashController()
     }
 
     private func cleanCookies() {
@@ -31,15 +30,6 @@ final class ProfileLogoutService {
                 WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
             }
         }
-    }
-
-    private func switchToSplashController() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("[ProfileLogoutService] invalid window configuration")
-            return
-        }
-
-        window.rootViewController = SplashViewController()
     }
 }
 

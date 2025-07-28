@@ -21,7 +21,7 @@ final class ImagesListCell: UITableViewCell {
             photoImageView.kf.cancelDownloadTask()
        }
 
-    @IBAction func likeButtonAction(_ sender: Any) {
+    @IBAction private func likeButtonAction(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
 
