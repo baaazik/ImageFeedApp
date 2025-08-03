@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Kingfisher
 
 protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
@@ -22,6 +21,7 @@ class ProfileViewPresenter: ProfilePresenterProtocol {
     private var profileImageServiceObserver: NSObjectProtocol?
 
     var view: ProfileViewControllerProtocol?
+    var imageLoader: ImageLoader?
 
     func viewDidLoad() {
         profileImageServiceObserver = NotificationCenter.default
@@ -57,11 +57,11 @@ class ProfileViewPresenter: ProfilePresenterProtocol {
         else { return }
 
         view?.show(avatar: nil)
-        KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
+        imageLoader?.loadImage(url: url) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let value):
-                self.view?.show(avatar: value.image)
+            case .success(let image):
+                self.view?.show(avatar: image)
             case .failure(let error):
                 print("[ProfileViewPresenter] failed to load avatar image: \(error)")
             }
