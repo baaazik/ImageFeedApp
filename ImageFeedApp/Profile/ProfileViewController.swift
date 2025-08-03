@@ -8,7 +8,15 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func show(profile: Profile)
+    func show(avatar: UIImage?)
+    func showExitAlert()
+    func switchToSplashController()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     private let avatarImageViewSize = 70.0
 
     private lazy var avatarImageView: UIImageView = {
@@ -59,42 +67,27 @@ final class ProfileViewController: UIViewController {
         return exitButton
     }()
 
-    private let profileService = ProfileService.shared
-    private let storage = OAuth2TokenStorage.shared
-    private let logoutService = ProfileLogoutService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    var presenter: ProfilePresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .ypBlack
         createElements()
-
-        nameText.text = profileService.profile?.name
-        accountText.text = profileService.profile?.loginName
-        statusText.text = profileService.profile?.bio
-
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        updateAvatar()
+        presenter?.viewDidLoad()
     }
 
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func show(profile: Profile) {
+        nameText.text = profile.name
+        accountText.text = profile.loginName
+        statusText.text = profile.bio
+    }
 
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(resource: .avatarPlaceholder))
+    func show(avatar: UIImage?) {
+        if let avatar {
+            avatarImageView.image = avatar
+        } else {
+            avatarImageView.image = UIImage(resource: .avatarPlaceholder)
+        }
     }
 
     private func createElements() {
@@ -128,6 +121,10 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc func logoutTapped() {
+        presenter?.logout()
+    }
+
+    func showExitAlert() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
@@ -135,8 +132,7 @@ final class ProfileViewController: UIViewController {
 
         let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.logoutService.logout()
-            self.switchToSplashController()
+            self.presenter?.doLogout()
         }
 
         let noAction = UIAlertAction(title: "Нет", style: .default)
@@ -147,7 +143,7 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    private func switchToSplashController() {
+    func switchToSplashController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("[ProfileLogoutService] invalid window configuration")
             return
