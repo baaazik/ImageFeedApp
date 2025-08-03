@@ -16,10 +16,6 @@ public protocol WebViewViewControllerProtocol: AnyObject {
     func setProgressHidden(_ isHidden: Bool)
 }
 
-enum WebViewConstants {
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-}
-
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
 
     @IBOutlet private weak var progressView: UIProgressView!
@@ -66,7 +62,9 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        if let code = presenter?.code(from: navigationAction) {
+        if
+            let url = navigationAction.request.url,
+            let code = presenter?.code(from: url) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
