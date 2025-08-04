@@ -39,8 +39,6 @@ final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
     func setProgressHidden(_ isHidden: Bool) {
 
     }
-    
-
 }
 
 final class WebViewTests: XCTestCase {

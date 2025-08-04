@@ -14,10 +14,18 @@ final class TabBarController: UITabBarController {
         let imagesListViewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController")
 
         let imageLoader = KingFisherImageLoader()
-        let profilePresenter = ProfileViewPresenter()
+        let profileService = ProfileService.shared
+        let profileImageService = ProfileImageService.shared
+        let logoutService = ProfileLogoutService.shared
+
+        let profilePresenter = ProfileViewPresenter(
+            profileService: profileService,
+            profileImageService: profileImageService,
+            logoutService: logoutService,
+            imageLoader: imageLoader)
+        
         let profileViewController = ProfileViewController()
         profilePresenter.view = profileViewController
-        profilePresenter.imageLoader = imageLoader
         profileViewController.presenter = profilePresenter
 
         profileViewController.tabBarItem = UITabBarItem(

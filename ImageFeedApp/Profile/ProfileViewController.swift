@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 protocol ProfileViewControllerProtocol {
-    var presenter: ProfilePresenterProtocol? { get set }
+    var presenter: ProfileViewPresenterProtocol? { get set }
     func show(profile: Profile)
     func show(avatar: UIImage?)
     func showExitAlert()
@@ -67,7 +67,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         return exitButton
     }()
 
-    var presenter: ProfilePresenterProtocol?
+    var presenter: ProfileViewPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
