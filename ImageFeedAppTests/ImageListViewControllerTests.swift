@@ -36,8 +36,10 @@ final class ImageListViewControllerSpy: ImagesListViewControllerProtocol {
     }
 
     func showNewPhotos(rows: [IndexPath]) {
-        rowsInserted = rows.count
-        showExpectation?.fulfill()
+        if rowsInserted == nil {
+            rowsInserted = rows.count
+            showExpectation?.fulfill()
+        }
     }
     
     func showProgress() {
@@ -153,21 +155,22 @@ final class ImageListViewControllerTests: XCTestCase {
 
     func testPresenterSetLike() {
         // given
-        let expectation = expectation(description: "Like expectation")
+        let expShow = expectation(description: "Show expectation")
+        let expLike = expectation(description: "Like expectation")
 
         let imageListService = ImageListServiceStub()
         let presenter = ImagesListViewPresenter(imageListService: imageListService)
-        let viewController = ImageListViewControllerSpy(nil, expectation)
+        let viewController = ImageListViewControllerSpy(expShow, expLike)
         viewController.presenter = presenter
         presenter.view = viewController
 
         // when
         presenter.viewDidLoad()
-        sleep(1)
+        wait(for: [expShow], timeout: 5)
         presenter.didLikeImage(row: 1)
 
         // then
-        waitForExpectations(timeout: 3)
+        wait(for: [expLike], timeout: 5)
         XCTAssertEqual(imageListService.likedPhotoId, "1")
         XCTAssertEqual(imageListService.likedPhotoState, true)
         XCTAssertTrue(viewController.showProgressCalled)

@@ -146,7 +146,8 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDL-mw-mFh">
                                 <rect key="frame" x="16" y="750" width="408" height="48"/>
-                                <constraints>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
+                                <constraints>s
                                     <constraint firstAttribute="height" constant="48" id="2rX-T2-Q2A"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
