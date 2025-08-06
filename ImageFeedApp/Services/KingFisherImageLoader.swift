@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class KingFisherImageLoader: ImageLoader {
+final class KingFisherImageLoader: ImageLoader {
     func loadImage(url: URL, completion: @escaping (Result<UIImage, Error>) -> Void) {
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
             guard let self = self else { return }

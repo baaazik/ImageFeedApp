@@ -62,15 +62,14 @@ class Image_FeedUITests: XCTestCase {
         let cell2 = tablesQuery.children(matching: .cell).element(boundBy: 1)
         XCTAssertTrue(cell2.waitForExistence(timeout: 1))
 
-        let likeButton = cell2.buttons["ActiveLikeImage"]
+        let likeButton = cell2.buttons["Like"]
         XCTAssertTrue(likeButton.waitForExistence(timeout: 1))
-
         likeButton.tap()
         sleep(1)
 
-        let unlikeButton = cell2.buttons["LikeImage"]
-        XCTAssertTrue(unlikeButton.waitForExistence(timeout: 1))
-        unlikeButton.tap()
+        let likeButton2 = cell2.buttons["Like"]
+        XCTAssertTrue(likeButton2.waitForExistence(timeout: 1))
+        likeButton2.tap()
         sleep(1)
 
         cell2.tap()

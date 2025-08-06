@@ -56,6 +56,8 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
             cell.dateText.text = ""
         }
 
+        cell.likeButton.accessibilityIdentifier = "Like"
+
         cell.setIsLiked(isLiked: photo.isLiked)
 
         cell.delegate = self
