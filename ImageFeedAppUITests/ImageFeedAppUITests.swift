@@ -31,7 +31,7 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(emailField.waitForExistence(timeout: 5))
 
         emailField.tap()
-        emailField.typeText("zabaznova2303@gmail.com")
+        emailField.typeText("user@mail.com")
         // hide keyboard
         dismissKeyboardArea.tap()
 
@@ -39,7 +39,7 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(passField.waitForExistence(timeout: 5))
 
         passField.tap()
-        passField.typeText("VL9-Z9?Y)rJciHX")
+        passField.typeText("password")
         // hide keyboard
         dismissKeyboardArea.tap()
 
